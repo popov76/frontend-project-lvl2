@@ -2,8 +2,11 @@
   "name": "@hexlet/code",
   "version": "0.0.1",
   "description": "Compares two configuraton files and shows a difference",
-  "main": "gendiff.js",
+  "main": "index.js",
   "type": "module",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

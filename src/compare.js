@@ -16,7 +16,7 @@ const compareFiles = (file1, file2) => {
       const obj2 = getObjectFromFile(file2);      
 
       const result = compareObjects(obj1, obj2);
-      console.log(result);
+      return result;
 }
 
 const compareObjects = (obj1, obj2) => {
