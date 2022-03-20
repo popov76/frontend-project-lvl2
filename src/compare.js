@@ -12,25 +12,27 @@ const getObjectFromFile = (filePath) => {
   return obj;
 };
 
+const getPropertyString = (property, obj1, obj2) => {
+  let result;
+  if (_.has(obj1, property) && !_.has(obj2, property)) {
+    result = ` - ${property}: ${obj1[property]}`;
+  } else if (!_.has(obj1, property) && _.has(obj2, property)) {
+    result = ` + ${property}: ${obj2[property]}`;
+  } else if (_.has(obj1, property) && _.has(obj2, property)) {
+    if (obj1[property] === obj2[property]) {
+      result = `   ${property}: ${obj1[property]}`;
+    } else {
+      result = ` - ${property}: ${obj1[property]}\n + ${property}: ${obj2[property]}`;
+    }
+  }
+  return result;
+};
+
 const compareObjects = (obj1, obj2) => {
   const unitedKeys = [...Object.keys(obj1), ...Object.keys(obj2)];
   const uniqKeys = _.uniq(unitedKeys);
   const sortedKeys = _.sortBy(uniqKeys);
-  const result = sortedKeys.reduce((acc, property) => {
-    let str;
-    if (_.has(obj1, property) && !_.has(obj2, property)) {
-      str = ` - ${property}: ${obj1[property]}`;
-    } else if (!_.has(obj1, property) && _.has(obj2, property)) {
-      str = ` + ${property}: ${obj2[property]}`;
-    } else if (_.has(obj1, property) && _.has(obj2, property)) {
-      if (obj1[property] === obj2[property]) {
-        str = `   ${property}: ${obj1[property]}`;
-      } else {
-        str = ` - ${property}: ${obj1[property]}\n + ${property}: ${obj2[property]}`;
-      }
-    }
-    return `${acc}\n${str}`;
-  }, '{');
+  const result = sortedKeys.reduce((acc, property) => `${acc}\n${getPropertyString(property, obj1, obj2)}`, '{');
   return `${result}\n}`;
 };
 
