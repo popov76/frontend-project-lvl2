@@ -1,4 +1,4 @@
-name: hexlet-check
+name: run tests and lint
 
 on:
   push:
@@ -15,4 +15,3 @@ jobs:
       - uses: actions/setup-node@v2
       - run: make lint
       - run: npm test
-      
