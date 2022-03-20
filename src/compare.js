@@ -13,12 +13,17 @@ const getObjectFromFile = (filePath) => {
 };
 
 const getPropertyString = (property, obj1, obj2) => {
+  const hasFirstObject = _.has(obj1, property);
+  const hasSecondObject = _.has(obj2, property);
+
   let result;
-  if (_.has(obj1, property) && !_.has(obj2, property)) {
+  if (hasFirstObject && !hasSecondObject) {
     result = ` - ${property}: ${obj1[property]}`;
-  } else if (!_.has(obj1, property) && _.has(obj2, property)) {
+  }
+  if (!hasFirstObject && hasSecondObject) {
     result = ` + ${property}: ${obj2[property]}`;
-  } else if (_.has(obj1, property) && _.has(obj2, property)) {
+  }
+  if (hasFirstObject && hasSecondObject) {
     if (obj1[property] === obj2[property]) {
       result = `   ${property}: ${obj1[property]}`;
     } else {
