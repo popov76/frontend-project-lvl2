@@ -17,3 +17,5 @@ jobs:
         run: npm ci
       - run: make lint
       - run: npm test
+      - run: make test-coverage
+      

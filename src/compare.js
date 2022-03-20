@@ -20,11 +20,9 @@ const compareObjects = (obj1, obj2) => {
     let str;
     if (_.has(obj1, property) && !_.has(obj2, property)) {
       str = ` - ${property}: ${obj1[property]}`;
-    }
-    if (!_.has(obj1, property) && _.has(obj2, property)) {
+    } else if (!_.has(obj1, property) && _.has(obj2, property)) {
       str = ` + ${property}: ${obj2[property]}`;
-    }
-    if (_.has(obj1, property) && _.has(obj2, property)) {
+    } else if (_.has(obj1, property) && _.has(obj2, property)) {
       if (obj1[property] === obj2[property]) {
         str = `   ${property}: ${obj1[property]}`;
       } else {
