@@ -13,8 +13,10 @@ const getObjectFromFile = (filePath) => {
 };
 
 const compareObjects = (obj1, obj2) => {
-  const keys = _.sortBy(_.uniq([...Object.keys(obj1), ...Object.keys(obj2)]));
-  const result = keys.reduce((acc, property) => {
+  const unitedKeys = [...Object.keys(obj1), ...Object.keys(obj2)];
+  const uniqKeys = _.uniq(unitedKeys);
+  const sortedKeys = _.sortBy(uniqKeys);
+  const result = sortedKeys.reduce((acc, property) => {
     let str;
     if (_.has(obj1, property) && !_.has(obj2, property)) {
       str = ` - ${property}: ${obj1[property]}`;
