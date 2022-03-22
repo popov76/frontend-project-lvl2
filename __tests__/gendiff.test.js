@@ -1,5 +1,11 @@
-// import { test, except } from 'jest';
+import { fileURLToPath } from 'url';
+import path from 'path';
 import compareFiles from '../src/compare.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const getFixturePath = (filename) => path.join(__dirname, '__fixtures__', filename);
 
 const correctResult = `{
  - follow: false
@@ -10,9 +16,16 @@ const correctResult = `{
  + verbose: true
 }`;
 
-test('compare test', () => {
+test('compare json', () => {
   expect(compareFiles(
-    '__tests__/__fixtures__/file1.json',
-    '__tests__/__fixtures__/file2.json',
+    getFixturePath('file1.json'),
+    getFixturePath('file2.json'),
+  )).toBe(correctResult);
+});
+
+test('compare yaml', () => {
+  expect(compareFiles(
+    getFixturePath('file1.yaml'),
+    getFixturePath('file2.yaml'),
   )).toBe(correctResult);
 });
