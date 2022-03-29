@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
+
 import { readFileSync } from 'fs';
 import compareFiles from '../src/compare.js';
 
@@ -8,9 +9,14 @@ const __dirname = path.dirname(__filename);
 
 const getFixturePath = (filename) => path.join(__dirname, '__fixtures__', filename);
 
-const correctResult1 = readFileSync(getFixturePath('result1.txt'), 'utf-8');
+// const correctResult2 = readFileSync(getFixturePath('result2.txt'), 'utf-8');
+let correctResult1;
+let correctResult2;
 
-const correctResult2 = readFileSync(getFixturePath('result2.txt'), 'utf-8');
+beforeAll(() => {
+  correctResult1 = readFileSync(getFixturePath('result1.txt'), 'utf-8');
+  correctResult2 = readFileSync(getFixturePath('result2.txt'), 'utf-8');
+});
 
 test('compare json', () => {
   expect(compareFiles(
@@ -30,5 +36,12 @@ test('compare json recurse', () => {
   expect(compareFiles(
     getFixturePath('file3.json'),
     getFixturePath('file4.json'),
+  )).toBe(correctResult2);
+});
+
+test('compare yaml recurse', () => {
+  expect(compareFiles(
+    getFixturePath('file3.yaml'),
+    getFixturePath('file4.yaml'),
   )).toBe(correctResult2);
 });
