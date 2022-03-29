@@ -7,6 +7,21 @@ import yaml from 'js-yaml';
 const indentSymbol = ' ';
 const indentCount = 4;
 
+const compareFiles = (file1, file2, format = 'stylish') => {
+  const obj1 = getObjectFromFile(file1);
+  const obj2 = getObjectFromFile(file2);
+  const compareResult = compareObjects(obj1, obj2);
+  let outputText = '';
+  switch (format) {
+    case 'stylish':
+      outputText = stylish(compareResult);
+      break;
+    default:
+      throw new Error('Unknown output format');
+  }
+  return outputText;
+};
+
 const getObjectFromFile = (filePath) => {
   let fileName = filePath;
   if (!filePath.startsWith('/')) {
@@ -26,6 +41,17 @@ const getObjectFromFile = (filePath) => {
       parse = JSON.parse;
   }
   return parse(fileContent);
+};
+
+const compareObjects = (obj1, obj2) => {
+  const result = {};
+  const uniqKeys = _.union(_.keys(obj1), _.keys(obj2));
+  const sortedKeys = _.sortBy(uniqKeys);
+  sortedKeys.forEach((key) => {
+    const compareKeyResult = compareKeys(obj1, obj2, key);
+    _.set(result, key, compareKeyResult);
+  });
+  return result;
 };
 
 const compareKeys = (obj1, obj2, key) => {
@@ -52,33 +78,7 @@ const compareKeys = (obj1, obj2, key) => {
   return res;
 };
 
-const compareObjects = (obj1, obj2) => {
-  const result = {};
-  const uniqKeys = _.union(_.keys(obj1), _.keys(obj2));
-  const sortedKeys = _.sortBy(uniqKeys);
-  sortedKeys.forEach((key) => {
-    const compareKeyResult = compareKeys(obj1, obj2, key);
-    _.set(result, key, compareKeyResult);
-  });
-  return result;
-};
-
 const stylish = (object) => {
-  const indentString = (indent) => indentSymbol.repeat(indentCount * indent);
-
-  const printValue = (value, indent = 0) => {
-    if (_.isObject(value)) {
-      let res = '{';
-      _.forOwn(value, (val, key) => {
-        res = `${res}\n${indentString(indent + 1)}${key}: ${printValue(val, indent + 1)}`;
-      });
-      return `${res}\n${indentString(indent)}}`;
-    }
-    return value;
-  };
-
-  const printKey = (name, value, indent, prefix) => `\n${indentString(indent)}  ${prefix} ${name}: ${printValue(value, indent + 1)}`;
-
   const formatObject = (obj, indent = 0) => {
     let result = '{';
     Object.keys(obj).forEach((key) => {
@@ -109,19 +109,19 @@ const stylish = (object) => {
   return formatObject(object);
 };
 
-const compareFiles = (file1, file2, format = 'stylish') => {
-  const obj1 = getObjectFromFile(file1);
-  const obj2 = getObjectFromFile(file2);
-  const compareResult = compareObjects(obj1, obj2);
-  let outputText = '';
-  switch (format) {
-    case 'stylish':
-      outputText = stylish(compareResult);
-      break;
-    default:
-      throw new Error('Unknown output format');
+const indentString = (indent) => indentSymbol.repeat(indentCount * indent);
+
+const printValue = (value, indent = 0) => {
+  if (_.isObject(value)) {
+    let res = '{';
+    _.forOwn(value, (val, key) => {
+      res = `${res}\n${indentString(indent + 1)}${key}: ${printValue(val, indent + 1)}`;
+    });
+    return `${res}\n${indentString(indent)}}`;
   }
-  return outputText;
+  return value;
 };
+
+const printKey = (name, value, indent, prefix) => `\n${indentString(indent)}  ${prefix} ${name}: ${printValue(value, indent + 1)}`;
 
 export default compareFiles;
