@@ -3,23 +3,18 @@ import { readFileSync } from 'fs';
 import _ from 'lodash';
 import path from 'path';
 import yaml from 'js-yaml';
-
-const indentSymbol = ' ';
-const indentCount = 4;
+import getFormatter from './formatters/index.js';
 
 const compareFiles = (file1, file2, format = 'stylish') => {
   const obj1 = getObjectFromFile(file1);
   const obj2 = getObjectFromFile(file2);
-  const compareResult = compareObjects(obj1, obj2);
-  let outputText = '';
-  switch (format) {
-    case 'stylish':
-      outputText = stylish(compareResult);
-      break;
-    default:
-      throw new Error('Unknown output format');
-  }
-  return outputText;
+  const diff = compareObjects(obj1, obj2);
+  return getFormattedDiff(diff, format);
+};
+
+const getFormattedDiff = (diff, format) => {
+  const formatter = getFormatter(format);
+  return formatter(diff);
 };
 
 const getObjectFromFile = (filePath) => {
@@ -77,51 +72,5 @@ const compareKeys = (obj1, obj2, key) => {
   }
   return res;
 };
-
-const stylish = (object) => {
-  const formatObject = (obj, indent = 0) => {
-    let result = '{';
-    Object.keys(obj).forEach((key) => {
-      const keyDescription = _.get(obj, key);
-      switch (keyDescription.has) {
-        case 'firstOnly':
-          result += printKey(key, keyDescription.value1, indent, '-');
-          break;
-        case 'secondOnly':
-          result += printKey(key, keyDescription.value2, indent, '+');
-          break;
-        case 'bothEqual':
-          result += printKey(key, keyDescription.value, indent, ' ');
-          break;
-        case 'bothNotEqual':
-          result += printKey(key, keyDescription.value1, indent, '-');
-          result += printKey(key, keyDescription.value2, indent, '+');
-          break;
-        case 'bothObjects':
-          result = `${result}\n${indentString(indent + 1)}${key}: ${formatObject(keyDescription.value, indent + 1)}`;
-          break;
-        default:
-          throw new Error(`Invalid description: ${keyDescription.has}`);
-      }
-    });
-    return `${result}\n${indentString(indent)}}`;
-  };
-  return formatObject(object);
-};
-
-const indentString = (indent) => indentSymbol.repeat(indentCount * indent);
-
-const printValue = (value, indent = 0) => {
-  if (_.isObject(value)) {
-    let res = '{';
-    _.forOwn(value, (val, key) => {
-      res = `${res}\n${indentString(indent + 1)}${key}: ${printValue(val, indent + 1)}`;
-    });
-    return `${res}\n${indentString(indent)}}`;
-  }
-  return value;
-};
-
-const printKey = (name, value, indent, prefix) => `\n${indentString(indent)}  ${prefix} ${name}: ${printValue(value, indent + 1)}`;
 
 export default compareFiles;
