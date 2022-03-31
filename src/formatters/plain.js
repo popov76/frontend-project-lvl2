@@ -12,11 +12,11 @@ const plain = (diff) => {
       const path = (parent === '') ? key : `${parent}.${key}`;
       switch (keyValue.action) {
         case 'wasRemoved':
-          result = `${result}\nProperty '${path}' was removed`;
+          result = `${result}Property '${path}' was removed\n`;
           break;
         case 'wasAdded':
-          result = `${result}\nProperty '${path}' was added with value: ${_.isObject(keyValue.value2)
-            ? '[complex value]' : addQuotesToString(keyValue.value2)}`;
+          result = `${result}Property '${path}' was added with value: ${_.isObject(keyValue.value2)
+            ? '[complex value]' : addQuotesToString(keyValue.value2)}\n`;
           break;
         case 'notChanged':
           break;
@@ -24,9 +24,9 @@ const plain = (diff) => {
           result = `${result}${dft(keyValue.value, path)}`;
           break;
         case 'wasUpdated':
-          result = `${result}\nProperty '${path}' was updated. From ${_.isObject(keyValue.value1)
+          result = `${result}Property '${path}' was updated. From ${_.isObject(keyValue.value1)
             ? '[complex value]' : addQuotesToString(keyValue.value1)} to ${_.isObject(keyValue.value2)
-            ? '[complex value]' : addQuotesToString(keyValue.value2)}`;
+            ? '[complex value]' : addQuotesToString(keyValue.value2)}\n`;
           break;
         default:
           throw new Error('invalid diff');
