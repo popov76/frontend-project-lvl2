@@ -12,4 +12,5 @@
 [![asciicast](https://asciinema.org/a/kbPTeZSPyZzukjIaL0SyT64Iy.svg)](https://asciinema.org/a/kbPTeZSPyZzukjIaL0SyT64Iy)
 # Compare recurse yaml
 [![asciicast](https://asciinema.org/a/jbovutj2aVrbaXCyZNJrfLNcG.svg)](https://asciinema.org/a/jbovutj2aVrbaXCyZNJrfLNcG)
-
+# Compare json plain format
+[![asciicast](https://asciinema.org/a/uDg6GrngOWAsHwTMcZXkPL8Du.svg)](https://asciinema.org/a/uDg6GrngOWAsHwTMcZXkPL8Du)
