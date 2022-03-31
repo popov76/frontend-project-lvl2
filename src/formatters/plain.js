@@ -25,7 +25,8 @@ const plain = (diff) => {
           break;
         case 'wasUpdated':
           result = `${result}\nProperty '${path}' was updated. From ${_.isObject(keyValue.value1)
-            ? '[complex value]' : addQuotesToString(keyValue.value1)} to ${addQuotesToString(keyValue.value2)}`;
+            ? '[complex value]' : addQuotesToString(keyValue.value1)} to ${_.isObject(keyValue.value2)
+            ? '[complex value]' : addQuotesToString(keyValue.value2)}`;
           break;
         default:
           throw new Error('invalid diff');
