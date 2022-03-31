@@ -7,26 +7,26 @@ const addQuotesToString = (value) => {
 
 const plain = (diff) => {
   const dft = (obj, parent = '') => {
-    let result = '';
+    const result = [];
     _.forOwn(obj, (keyValue, key) => {
       const path = (parent === '') ? key : `${parent}.${key}`;
       switch (keyValue.action) {
         case 'wasRemoved':
-          result = `${result}Property '${path}' was removed\n`;
+          result.push(`Property '${path}' was removed`);
           break;
         case 'wasAdded':
-          result = `${result}Property '${path}' was added with value: ${_.isObject(keyValue.value2)
-            ? '[complex value]' : addQuotesToString(keyValue.value2)}\n`;
+          result.push(`Property '${path}' was added with value: ${_.isObject(keyValue.value2)
+            ? '[complex value]' : addQuotesToString(keyValue.value2)}`);
           break;
         case 'notChanged':
           break;
         case 'complexValue':
-          result = `${result}${dft(keyValue.value, path)}`;
+          result.push(...dft(keyValue.value, path));
           break;
         case 'wasUpdated':
-          result = `${result}Property '${path}' was updated. From ${_.isObject(keyValue.value1)
+          result.push(`Property '${path}' was updated. From ${_.isObject(keyValue.value1)
             ? '[complex value]' : addQuotesToString(keyValue.value1)} to ${_.isObject(keyValue.value2)
-            ? '[complex value]' : addQuotesToString(keyValue.value2)}\n`;
+            ? '[complex value]' : addQuotesToString(keyValue.value2)}`);
           break;
         default:
           throw new Error('invalid diff');
@@ -34,7 +34,7 @@ const plain = (diff) => {
     });
     return result;
   };
-  return dft(diff);
+  return dft(diff).join('\n');
 };
 
 export default plain;
