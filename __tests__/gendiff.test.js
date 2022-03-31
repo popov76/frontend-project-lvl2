@@ -13,11 +13,13 @@ const getFixturePath = (filename) => path.join(__dirname, '__fixtures__', filena
 let correctResult1;
 let correctResult2;
 let correctResult3;
+let correctResult4;
 
 beforeAll(() => {
   correctResult1 = readFileSync(getFixturePath('result1.txt'), 'utf-8');
   correctResult2 = readFileSync(getFixturePath('result2.txt'), 'utf-8');
   correctResult3 = readFileSync(getFixturePath('result3.txt'), 'utf-8');
+  correctResult4 = readFileSync(getFixturePath('result4.txt'), 'utf-8');
 });
 
 test('compare json', () => {
@@ -62,4 +64,20 @@ test('compare yaml recurse plain format', () => {
     getFixturePath('file4.yaml'),
     'plain',
   )).toBe(correctResult3);
+});
+
+test('compare json recurse json format', () => {
+  expect(compareFiles(
+    getFixturePath('file3.json'),
+    getFixturePath('file4.json'),
+    'json',
+  )).toBe(correctResult4);
+});
+
+test('compare yaml recurse json format', () => {
+  expect(compareFiles(
+    getFixturePath('file3.yaml'),
+    getFixturePath('file4.yaml'),
+    'json',
+  )).toBe(correctResult4);
 });

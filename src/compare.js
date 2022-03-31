@@ -54,20 +54,20 @@ const compareKeys = (obj1, obj2, key) => {
   const hasSecondObject = _.has(obj2, key);
   let res;
   if (hasFirstObject && !hasSecondObject) {
-    res = { has: 'firstOnly', value1: _.get(obj1, key) };
+    res = { action: 'wasRemoved', value1: _.get(obj1, key) };
   }
   if (!hasFirstObject && hasSecondObject) {
-    res = { has: 'secondOnly', value2: _.get(obj2, key) };
+    res = { action: 'wasAdded', value2: _.get(obj2, key) };
   }
   if (hasFirstObject && hasSecondObject) {
     const value1 = _.get(obj1, key);
     const value2 = _.get(obj2, key);
     if (_.isObject(value1) && _.isObject(value2)) {
-      res = { has: 'bothObjects', value: compareObjects(value1, value2) };
+      res = { action: 'complexValue', value: compareObjects(value1, value2) };
     } else if (value1 === value2) {
-      res = { has: 'bothEqual', value: value1 };
+      res = { action: 'notChanged', value: value1 };
     } else {
-      res = { has: 'bothNotEqual', value1, value2 };
+      res = { action: 'wasUpdated', value1, value2 };
     }
   }
   return res;

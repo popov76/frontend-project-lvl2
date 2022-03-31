@@ -10,20 +10,22 @@ const plain = (diff) => {
     let result = '';
     _.forOwn(obj, (keyValue, key) => {
       const path = (parent === '') ? key : `${parent}.${key}`;
-      switch (keyValue.has) {
-        case 'firstOnly':
+      switch (keyValue.action) {
+        case 'wasRemoved':
           result = `${result}\nProperty '${path}' was removed`;
           break;
-        case 'secondOnly':
-          result = `${result}\nProperty '${path}' was added with value: ${_.isObject(keyValue.value2) ? '[complex value]' : addQuotesToString(keyValue.value2)}`;
+        case 'wasAdded':
+          result = `${result}\nProperty '${path}' was added with value: ${_.isObject(keyValue.value2)
+            ? '[complex value]' : addQuotesToString(keyValue.value2)}`;
           break;
-        case 'bothObjects':
+        case 'notChanged':
+          break;
+        case 'complexValue':
           result = `${result}${dft(keyValue.value, path)}`;
           break;
-        case 'bothEqual':
-          break;
-        case 'bothNotEqual':
-          result = `${result}\nProperty '${path}' was updated. From ${_.isObject(keyValue.value1) ? '[complex value]' : addQuotesToString(keyValue.value1)} to ${addQuotesToString(keyValue.value2)}`;
+        case 'wasUpdated':
+          result = `${result}\nProperty '${path}' was updated. From ${_.isObject(keyValue.value1)
+            ? '[complex value]' : addQuotesToString(keyValue.value1)} to ${addQuotesToString(keyValue.value2)}`;
           break;
         default:
           throw new Error('invalid diff');

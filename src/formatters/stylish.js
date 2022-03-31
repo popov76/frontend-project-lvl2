@@ -9,25 +9,25 @@ const stylish = (object) => {
     let result = '{';
     Object.keys(obj).forEach((key) => {
       const keyDescription = _.get(obj, key);
-      switch (keyDescription.has) {
-        case 'firstOnly':
+      switch (keyDescription.action) {
+        case 'wasRemoved':
           result += printKey(key, keyDescription.value1, indent, '-');
           break;
-        case 'secondOnly':
+        case 'wasAdded':
           result += printKey(key, keyDescription.value2, indent, '+');
           break;
-        case 'bothEqual':
+        case 'notChanged':
           result += printKey(key, keyDescription.value, indent, ' ');
           break;
-        case 'bothNotEqual':
+        case 'wasUpdated':
           result += printKey(key, keyDescription.value1, indent, '-');
           result += printKey(key, keyDescription.value2, indent, '+');
           break;
-        case 'bothObjects':
+        case 'complexValue':
           result = `${result}\n${indentString(indent + 1)}${key}: ${formatObject(keyDescription.value, indent + 1)}`;
           break;
         default:
-          throw new Error(`Invalid description: ${keyDescription.has}`);
+          throw new Error(`Invalid description: ${keyDescription.action}`);
       }
     });
     return `${result}\n${indentString(indent)}}`;
