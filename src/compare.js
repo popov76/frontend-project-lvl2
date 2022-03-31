@@ -30,6 +30,7 @@ const getObjectFromFile = (filePath) => {
       parse = JSON.parse;
       break;
     case '.yaml':
+    case '.yml':
       parse = yaml.load;
       break;
     default:
