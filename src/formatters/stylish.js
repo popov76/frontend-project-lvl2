@@ -6,30 +6,23 @@ const indentCount = 4;
 
 const stylish = (object) => {
   const formatObject = (obj, indent = 0) => {
-    let result = '{';
-    Object.keys(obj).forEach((key) => {
+    const result = Object.keys(obj).reduce((acc, key) => {
       const keyDescription = _.get(obj, key);
       switch (keyDescription.action) {
         case 'wasRemoved':
-          result += printKey(key, keyDescription.value1, indent, '-');
-          break;
+          return `${acc}${printKey(key, keyDescription.value1, indent, '-')}`;
         case 'wasAdded':
-          result += printKey(key, keyDescription.value2, indent, '+');
-          break;
+          return `${acc}${printKey(key, keyDescription.value2, indent, '+')}`;
         case 'notChanged':
-          result += printKey(key, keyDescription.value, indent, ' ');
-          break;
+          return `${acc}${printKey(key, keyDescription.value, indent, ' ')}`;
         case 'wasUpdated':
-          result += printKey(key, keyDescription.value1, indent, '-');
-          result += printKey(key, keyDescription.value2, indent, '+');
-          break;
+          return `${acc}${printKey(key, keyDescription.value1, indent, '-')}${printKey(key, keyDescription.value2, indent, '+')}`;
         case 'complexValue':
-          result = `${result}\n${indentString(indent + 1)}${key}: ${formatObject(keyDescription.value, indent + 1)}`;
-          break;
+          return `${acc}\n${indentString(indent + 1)}${key}: ${formatObject(keyDescription.value, indent + 1)}`;
         default:
           throw new Error(`Invalid description: ${keyDescription.action}`);
       }
-    });
+    }, '{');
     return `${result}\n${indentString(indent)}}`;
   };
   return formatObject(object);
@@ -39,10 +32,11 @@ const indentString = (indent) => indentSymbol.repeat(indentCount * indent);
 
 const printValue = (value, indent = 0) => {
   if (_.isObject(value)) {
-    let res = '{';
-    _.forOwn(value, (val, key) => {
-      res = `${res}\n${indentString(indent + 1)}${key}: ${printValue(val, indent + 1)}`;
-    });
+    // let res = '{';
+    // eslint-disable-next-line arrow-body-style
+    const res = _.reduce(value, (acc, val, key) => {
+      return `${acc}\n${indentString(indent + 1)}${key}: ${printValue(val, indent + 1)}`;
+    }, '{');
     return `${res}\n${indentString(indent)}}`;
   }
   return value;

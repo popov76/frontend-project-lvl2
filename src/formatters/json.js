@@ -2,41 +2,37 @@ import _ from 'lodash';
 
 const json = (diff) => {
   const dft = (obj, parent = '') => {
-    let messages = [];
-    _.forOwn(obj, (keyValue, key) => {
+    // eslint-disable-next-line consistent-return
+    const messages = _.reduce(obj, (acc, keyValue, key) => {
       const path = (parent === '') ? key : `${parent}.${key}`;
       const action = _.get(keyValue, 'action');
       switch (action) {
         case 'wasRemoved':
-          messages.push({
+          return acc.concat({
             property: path,
             action,
           });
-          break;
         case 'wasAdded':
-          messages.push({
+          return acc.concat({
             property: path,
             action,
             newValue: _.isObject(keyValue.value2) ? '[complex value]' : keyValue.value2,
           });
-          break;
         case 'notChanged':
-          break;
+          return acc;
         case 'complexValue':
-          messages = messages.concat(dft(keyValue.value, path));
-          break;
+          return acc.concat(dft(keyValue.value, path));
         case 'wasUpdated':
-          messages.push({
+          return acc.concat({
             property: path,
             action,
             oldValue: _.isObject(keyValue.value1) ? '[complex value]' : keyValue.value1,
             newValue: keyValue.value2,
           });
-          break;
         default:
           throw new Error('invalid diff');
       }
-    });
+    }, []);
     return messages;
   };
   return JSON.stringify({ messages: dft(diff) });

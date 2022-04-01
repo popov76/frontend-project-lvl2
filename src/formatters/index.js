@@ -3,21 +3,16 @@ import plain from './plain.js';
 import json from './json.js';
 
 const getFormatter = (format) => {
-  let formatter;
   switch (format.trim()) {
     case 'stylish':
-      formatter = stylish;
-      break;
+      return stylish;
     case 'plain':
-      formatter = plain;
-      break;
+      return plain;
     case 'json':
-      formatter = json;
-      break;
+      return json;
     default:
       throw new Error('Unknown output format');
   }
-  return formatter;
 };
 
 export default getFormatter;

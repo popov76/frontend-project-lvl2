@@ -9,45 +9,41 @@ const __dirname = path.dirname(__filename);
 
 const getFixturePath = (filename) => path.join(__dirname, '__fixtures__', filename);
 
-// const correctResult2 = readFileSync(getFixturePath('result2.txt'), 'utf-8');
-let correctResult1;
-let correctResult2;
-let correctResult3;
-let correctResult4;
+const correctAnswers = {};
 
 beforeAll(() => {
-  correctResult1 = readFileSync(getFixturePath('result1.txt'), 'utf-8');
-  correctResult2 = readFileSync(getFixturePath('result2.txt'), 'utf-8');
-  correctResult3 = readFileSync(getFixturePath('result3.txt'), 'utf-8');
-  correctResult4 = readFileSync(getFixturePath('result4.txt'), 'utf-8');
+  correctAnswers.correctResult1 = readFileSync(getFixturePath('result1.txt'), 'utf-8');
+  correctAnswers.correctResult2 = readFileSync(getFixturePath('result2.txt'), 'utf-8');
+  correctAnswers.correctResult3 = readFileSync(getFixturePath('result3.txt'), 'utf-8');
+  correctAnswers.correctResult4 = readFileSync(getFixturePath('result4.txt'), 'utf-8');
 });
 
 test('compare json', () => {
   expect(compareFiles(
     getFixturePath('file1.json'),
     getFixturePath('file2.json'),
-  )).toBe(correctResult1);
+  )).toBe(correctAnswers.correctResult1);
 });
 
 test('compare yaml', () => {
   expect(compareFiles(
     getFixturePath('file1.yaml'),
     getFixturePath('file2.yaml'),
-  )).toBe(correctResult1);
+  )).toBe(correctAnswers.correctResult1);
 });
 
 test('compare json recurse', () => {
   expect(compareFiles(
     getFixturePath('file3.json'),
     getFixturePath('file4.json'),
-  )).toBe(correctResult2);
+  )).toBe(correctAnswers.correctResult2);
 });
 
 test('compare yaml recurse', () => {
   expect(compareFiles(
     getFixturePath('file3.yaml'),
     getFixturePath('file4.yaml'),
-  )).toBe(correctResult2);
+  )).toBe(correctAnswers.correctResult2);
 });
 
 test('compare json recurse plain format', () => {
@@ -55,7 +51,7 @@ test('compare json recurse plain format', () => {
     getFixturePath('file3.json'),
     getFixturePath('file4.json'),
     'plain',
-  )).toBe(correctResult3);
+  )).toBe(correctAnswers.correctResult3);
 });
 
 test('compare yaml recurse plain format', () => {
@@ -63,7 +59,7 @@ test('compare yaml recurse plain format', () => {
     getFixturePath('file3.yaml'),
     getFixturePath('file4.yaml'),
     'plain',
-  )).toBe(correctResult3);
+  )).toBe(correctAnswers.correctResult3);
 });
 
 test('compare json recurse json format', () => {
@@ -71,7 +67,7 @@ test('compare json recurse json format', () => {
     getFixturePath('file3.json'),
     getFixturePath('file4.json'),
     'json',
-  )).toBe(correctResult4);
+  )).toBe(correctAnswers.correctResult4);
 });
 
 test('compare yaml recurse json format', () => {
@@ -79,5 +75,5 @@ test('compare yaml recurse json format', () => {
     getFixturePath('file3.yaml'),
     getFixturePath('file4.yaml'),
     'json',
-  )).toBe(correctResult4);
+  )).toBe(correctAnswers.correctResult4);
 });

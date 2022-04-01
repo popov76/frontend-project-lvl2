@@ -18,60 +18,52 @@ const getFormattedDiff = (diff, format) => {
 };
 
 const getObjectFromFile = (filePath) => {
-  let fileName = filePath;
-  if (!filePath.startsWith('/')) {
-    fileName = path.resolve(process.cwd(), filePath);
-  }
+  const fileName = (!filePath.startsWith('/')) ? path.resolve(process.cwd(), filePath) : filePath;
   const fileContent = readFileSync(fileName);
   const ext = path.extname(fileName);
-  let parse;
   switch (ext) {
     case '.json':
-      parse = JSON.parse;
-      break;
+      return JSON.parse(fileContent);
     case '.yaml':
     case '.yml':
-      parse = yaml.load;
-      break;
+      return yaml.load(fileContent);
     default:
-      parse = JSON.parse;
+      throw new Error('Unknow file type.');
   }
-  return parse(fileContent);
 };
 
 const compareObjects = (obj1, obj2) => {
-  const result = {};
   const uniqKeys = _.union(_.keys(obj1), _.keys(obj2));
   const sortedKeys = _.sortBy(uniqKeys);
-  sortedKeys.forEach((key) => {
+  const result = sortedKeys.reduce((acc, key) => {
     const compareKeyResult = compareKeys(obj1, obj2, key);
-    _.set(result, key, compareKeyResult);
-  });
+    _.set(acc, key, compareKeyResult);
+    return acc;
+  }, {});
   return result;
 };
 
 const compareKeys = (obj1, obj2, key) => {
   const hasFirstObject = _.has(obj1, key);
   const hasSecondObject = _.has(obj2, key);
-  let res;
   if (hasFirstObject && !hasSecondObject) {
-    res = { action: 'wasRemoved', value1: _.get(obj1, key) };
+    return { action: 'wasRemoved', value1: _.get(obj1, key) };
   }
   if (!hasFirstObject && hasSecondObject) {
-    res = { action: 'wasAdded', value2: _.get(obj2, key) };
+    return { action: 'wasAdded', value2: _.get(obj2, key) };
   }
   if (hasFirstObject && hasSecondObject) {
     const value1 = _.get(obj1, key);
     const value2 = _.get(obj2, key);
     if (_.isObject(value1) && _.isObject(value2)) {
-      res = { action: 'complexValue', value: compareObjects(value1, value2) };
-    } else if (value1 === value2) {
-      res = { action: 'notChanged', value: value1 };
-    } else {
-      res = { action: 'wasUpdated', value1, value2 };
+      return { action: 'complexValue', value: compareObjects(value1, value2) };
     }
+    if (value1 === value2) {
+      return { action: 'notChanged', value: value1 };
+    }
+    return { action: 'wasUpdated', value1, value2 };
   }
-  return res;
+  return {};
 };
 
 export default compareFiles;
