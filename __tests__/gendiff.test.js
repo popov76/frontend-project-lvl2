@@ -9,71 +9,70 @@ const __dirname = path.dirname(__filename);
 
 const getFixturePath = (filename) => path.join(__dirname, '__fixtures__', filename);
 
-const correctAnswers = {};
-
-beforeAll(() => {
-  correctAnswers.correctResult1 = readFileSync(getFixturePath('result1.txt'), 'utf-8');
-  correctAnswers.correctResult2 = readFileSync(getFixturePath('result2.txt'), 'utf-8');
-  correctAnswers.correctResult3 = readFileSync(getFixturePath('result3.txt'), 'utf-8');
-  correctAnswers.correctResult4 = readFileSync(getFixturePath('result4.txt'), 'utf-8');
-});
-
 test('compare json', () => {
+  const correctResult1 = readFileSync(getFixturePath('result1.txt'), 'utf-8');
   expect(compareFiles(
     getFixturePath('file1.json'),
     getFixturePath('file2.json'),
-  )).toBe(correctAnswers.correctResult1);
+  )).toBe(correctResult1);
 });
 
 test('compare yaml', () => {
+  const correctResult1 = readFileSync(getFixturePath('result1.txt'), 'utf-8');
   expect(compareFiles(
     getFixturePath('file1.yaml'),
     getFixturePath('file2.yaml'),
-  )).toBe(correctAnswers.correctResult1);
+  )).toBe(correctResult1);
 });
 
 test('compare json recurse', () => {
+  const correctResult2 = readFileSync(getFixturePath('result2.txt'), 'utf-8');
   expect(compareFiles(
     getFixturePath('file3.json'),
     getFixturePath('file4.json'),
-  )).toBe(correctAnswers.correctResult2);
+  )).toBe(correctResult2);
 });
 
 test('compare yaml recurse', () => {
+  const correctResult2 = readFileSync(getFixturePath('result2.txt'), 'utf-8');
   expect(compareFiles(
     getFixturePath('file3.yaml'),
     getFixturePath('file4.yaml'),
-  )).toBe(correctAnswers.correctResult2);
+  )).toBe(correctResult2);
 });
 
 test('compare json recurse plain format', () => {
+  const correctResult3 = readFileSync(getFixturePath('result3.txt'), 'utf-8');
   expect(compareFiles(
     getFixturePath('file3.json'),
     getFixturePath('file4.json'),
     'plain',
-  )).toBe(correctAnswers.correctResult3);
+  )).toBe(correctResult3);
 });
 
 test('compare yaml recurse plain format', () => {
+  const correctResult3 = readFileSync(getFixturePath('result3.txt'), 'utf-8');
   expect(compareFiles(
     getFixturePath('file3.yaml'),
     getFixturePath('file4.yaml'),
     'plain',
-  )).toBe(correctAnswers.correctResult3);
+  )).toBe(correctResult3);
 });
 
 test('compare json recurse json format', () => {
+  const correctResult4 = readFileSync(getFixturePath('result4.txt'), 'utf-8');
   expect(compareFiles(
     getFixturePath('file3.json'),
     getFixturePath('file4.json'),
     'json',
-  )).toBe(correctAnswers.correctResult4);
+  )).toBe(correctResult4);
 });
 
 test('compare yaml recurse json format', () => {
+  const correctResult4 = readFileSync(getFixturePath('result4.txt'), 'utf-8');
   expect(compareFiles(
     getFixturePath('file3.yaml'),
     getFixturePath('file4.yaml'),
     'json',
-  )).toBe(correctAnswers.correctResult4);
+  )).toBe(correctResult4);
 });
