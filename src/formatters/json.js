@@ -8,26 +8,16 @@ const json = (diff) => {
       const action = _.get(keyValue, 'action');
       switch (action) {
         case 'wasRemoved':
-          return acc.concat({
-            property: path,
-            action,
-          });
+          return acc.concat({ property: path, action });
         case 'wasAdded':
-          return acc.concat({
-            property: path,
-            action,
-            newValue: _.isObject(keyValue.value2) ? '[complex value]' : keyValue.value2,
-          });
+          return acc.concat({ property: path, action, newValue: _.isObject(keyValue.value2) ? '[complex value]' : keyValue.value2 });
         case 'notChanged':
           return acc;
         case 'complexValue':
           return acc.concat(dft(keyValue.value, path));
         case 'wasUpdated':
           return acc.concat({
-            property: path,
-            action,
-            oldValue: _.isObject(keyValue.value1) ? '[complex value]' : keyValue.value1,
-            newValue: keyValue.value2,
+            property: path, action, oldValue: _.isObject(keyValue.value1) ? '[complex value]' : keyValue.value1, newValue: keyValue.value2,
           });
         default:
           throw new Error('invalid diff');
