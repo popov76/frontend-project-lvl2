@@ -1,3 +1,3 @@
-import compareFiles from './src/compare.js';
+import compareDataSets from './src/index.js';
 
-export default compareFiles;
+export default compareDataSets;
