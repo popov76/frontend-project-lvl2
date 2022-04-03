@@ -1,3 +1,3 @@
-import compareDataSets from './src/index.js';
+import genDiff from './src/fileDataSets.js';
 
-export default compareDataSets;
+export default genDiff;
