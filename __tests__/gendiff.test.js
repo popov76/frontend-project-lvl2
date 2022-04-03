@@ -1,6 +1,5 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
-
 import { readFileSync } from 'fs';
 import compareDataSets from '../src/index.js';
 import { getFileData } from '../src/parse.js';

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import { compareDataSets } from '../src/index.js';
+import compareDataSets from '../src/index.js';
 import { getFileData } from '../src/parse.js';
 
 program
