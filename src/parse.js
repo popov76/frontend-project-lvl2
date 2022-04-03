@@ -7,7 +7,7 @@ const parseData = (dataSet) => {
     case 'yaml':
       return yaml.load(dataSet.data);
     default:
-      throw new Error('Unknown data type.');
+      throw new Error('Unknown data type:');
   }
 };
 

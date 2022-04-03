@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import path from 'path';
+import compareDataSets from './index.js';
 
 const getFileData = (filePath) => {
   const fileName = (!filePath.startsWith('/')) ? path.resolve(process.cwd(), filePath) : filePath;
@@ -15,4 +16,11 @@ const getFileData = (filePath) => {
       throw new Error('Unknown file type.');
   }
 };
-export default getFileData;
+
+const genDiff = (file1, file2, format) => {
+  const file1Data = getFileData(file1);
+  const file2Data = getFileData(file2);
+  return compareDataSets(file1Data, file2Data, format);
+};
+
+export default genDiff;

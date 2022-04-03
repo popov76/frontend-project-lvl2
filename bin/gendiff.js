@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import compareDataSets from '../src/index.js';
-import getFileData from '../src/fileDataSets.js';
+import gendiff from '../src/fileDataSets.js';
 
 program
   .version('0.25.0')
@@ -14,9 +13,7 @@ program
   .addHelpText('before', '\n')
   .action((filepath1, filepath2) => {
     const options = program.opts();
-    const file1Data = getFileData(filepath1);
-    const file2Data = getFileData(filepath2);
-    const formattedDiff = compareDataSets(file1Data, file2Data, options.format);
+    const formattedDiff = gendiff(filepath1, filepath2, options.format);
     console.log(formattedDiff); // eslint-disable-line no-console
   });
 program.parse();
