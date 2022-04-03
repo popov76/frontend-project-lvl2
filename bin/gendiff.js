@@ -2,7 +2,7 @@
 
 import { program } from 'commander';
 import compareDataSets from '../src/index.js';
-import { getFileData } from '../src/parse.js';
+import getFileData from '../src/fileDataSets.js';
 
 program
   .version('0.25.0')
