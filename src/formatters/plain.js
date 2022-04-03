@@ -7,7 +7,6 @@ const addQuotesToString = (value) => {
 
 const plain = (diff) => {
   const dft = (obj, parent = '') => {
-    // const result = [];
     const result = _.reduce(obj, (acc, keyValue, key) => {
       const path = (parent === '') ? key : `${parent}.${key}`;
       switch (keyValue.action) {

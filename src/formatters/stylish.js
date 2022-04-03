@@ -32,7 +32,6 @@ const indentString = (indent) => indentSymbol.repeat(indentCount * indent);
 
 const printValue = (value, indent = 0) => {
   if (_.isObject(value)) {
-    // let res = '{';
     // eslint-disable-next-line arrow-body-style
     const res = _.reduce(value, (acc, val, key) => {
       return `${acc}\n${indentString(indent + 1)}${key}: ${printValue(val, indent + 1)}`;
