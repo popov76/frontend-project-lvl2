@@ -24,7 +24,7 @@ const plain = (diff) => {
             ? '[complex value]' : addQuotesToString(keyValue.value1)} to ${_.isObject(keyValue.value2)
             ? '[complex value]' : addQuotesToString(keyValue.value2)}`);
         default:
-          throw new Error('invalid diff');
+          throw new Error('Invalid diff node type: '.concat(keyValue.action));
       }
     }, []);
     return result;

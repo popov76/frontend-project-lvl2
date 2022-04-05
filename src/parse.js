@@ -5,9 +5,10 @@ const parseData = (dataSet) => {
     case 'json':
       return JSON.parse(dataSet.data);
     case 'yaml':
+    case 'yml':
       return yaml.load(dataSet.data);
     default:
-      throw new Error('Unknown data type:');
+      throw new Error('Unknown data type:'.concat(dataSet.dataType));
   }
 };
 

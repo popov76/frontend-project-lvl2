@@ -4,7 +4,7 @@ import { program } from 'commander';
 import gendiff from '../src/fileDataSets.js';
 
 program
-  .version('0.25.0')
+  .version('0.5.0')
   .description('Compares two configuraton files and shows a difference')
   .argument('<filepath1>')
   .argument('<filepath2>')

@@ -6,15 +6,11 @@ const getFileData = (filePath) => {
   const fileName = (!filePath.startsWith('/')) ? path.resolve(process.cwd(), filePath) : filePath;
   const fileContent = readFileSync(fileName);
   const ext = path.extname(fileName);
-  switch (ext) {
-    case '.json':
-      return { data: fileContent, dataType: 'json' };
-    case '.yaml':
-    case '.yml':
-      return { data: fileContent, dataType: 'yaml' };
-    default:
-      throw new Error('Unknown file type.');
+  if (ext.startsWith('.')) {
+    return { data: fileContent, dataType: ext.slice(1) };
   }
+  const msg = `Unknown file type:  ${ext}`;
+  throw new Error(msg);
 };
 
 const genDiff = (file1, file2, format) => {

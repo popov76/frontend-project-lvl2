@@ -6,8 +6,7 @@ const compareObjects = (obj1, obj2) => {
   const sortedKeys = _.sortBy(uniqKeys);
   const result = sortedKeys.reduce((acc, key) => {
     const compareKeyResult = compareKeys(obj1, obj2, key);
-    _.set(acc, key, compareKeyResult);
-    return acc;
+    return { ...acc, [key]: compareKeyResult };
   }, {});
   return result;
 };
