@@ -1,3 +1,19 @@
+# gendiff
+
+Compares two configuration files and shows a difference.
+
+# Install
+ make install
+# Usage
+
+ gendiff [options] <filepath1> <filepath2>
+
+  Options:
+    -V, --version        output the version number
+    -h, --help           output usage information
+    -f, --format <type>  output format
+ 
+
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/popov76/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/popov76/frontend-project-lvl2/actions)
 
