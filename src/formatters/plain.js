@@ -6,7 +6,7 @@ const addQuotesToString = (value) => {
 };
 
 const plain = (diff) => {
-  const dft = (obj, parent = '') => {
+  const diffTraversal = (obj, parent = '') => {
     const result = _.reduce(obj, (acc, keyValue, key) => {
       const path = (parent === '') ? key : `${parent}.${key}`;
       switch (keyValue.action) {
@@ -18,18 +18,18 @@ const plain = (diff) => {
         case 'notChanged':
           return acc;
         case 'complexValue':
-          return acc.concat(dft(keyValue.value, path));
+          return acc.concat(diffTraversal(keyValue.value, path));
         case 'wasUpdated':
           return acc.concat(`Property '${path}' was updated. From ${_.isObject(keyValue.value1)
             ? '[complex value]' : addQuotesToString(keyValue.value1)} to ${_.isObject(keyValue.value2)
             ? '[complex value]' : addQuotesToString(keyValue.value2)}`);
         default:
-          throw new Error('Invalid diff node type: '.concat(keyValue.action));
+          throw new Error(`Invalid diff node type: ${keyValue.action}`);
       }
     }, []);
     return result;
   };
-  return dft(diff).join('\n');
+  return diffTraversal(diff).join('\n');
 };
 
 export default plain;

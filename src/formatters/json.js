@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const json = (diff) => {
-  const dft = (obj, parent = '') => {
+  const diffTraversal = (obj, parent = '') => {
     // eslint-disable-next-line consistent-return
     const messages = _.reduce(obj, (acc, keyValue, key) => {
       const path = (parent === '') ? key : `${parent}.${key}`;
@@ -14,18 +14,18 @@ const json = (diff) => {
         case 'notChanged':
           return acc;
         case 'complexValue':
-          return acc.concat(dft(keyValue.value, path));
+          return acc.concat(diffTraversal(keyValue.value, path));
         case 'wasUpdated':
           return acc.concat({
             property: path, action, oldValue: _.isObject(keyValue.value1) ? '[complex value]' : keyValue.value1, newValue: keyValue.value2,
           });
         default:
-          throw new Error('invalid diff');
+          throw new Error(`invalid diff action: ${action}`);
       }
     }, []);
     return messages;
   };
-  return JSON.stringify({ messages: dft(diff) });
+  return JSON.stringify({ messages: diffTraversal(diff) });
 };
 
 export default json;

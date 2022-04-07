@@ -1,14 +1,14 @@
 import yaml from 'js-yaml';
 
-const parseData = (dataSet) => {
-  switch (dataSet.dataType) {
+const parseData = ({ data, dataType }) => {
+  switch (dataType) {
     case 'json':
-      return JSON.parse(dataSet.data);
+      return JSON.parse(data);
     case 'yaml':
     case 'yml':
-      return yaml.load(dataSet.data);
+      return yaml.load(data);
     default:
-      throw new Error('Unknown data type:'.concat(dataSet.dataType));
+      throw new Error(`Unknown data type: ${dataType}`);
   }
 };
 

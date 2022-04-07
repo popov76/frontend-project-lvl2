@@ -27,6 +27,7 @@ const stylish = (object) => {
     }, '{');
     return `${result}\n${indentString(level)}}`;
   };
+
   const processKey = (key, keyDescription, level) => {
     switch (keyDescription.action) {
       case 'wasRemoved':
@@ -43,6 +44,7 @@ const stylish = (object) => {
         throw new Error(`Invalid description: ${keyDescription.action}`);
     }
   };
+
   return formatObject(object, 0);
 };
 

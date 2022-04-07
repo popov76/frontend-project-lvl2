@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import gendiff from '../src/fileDataSets.js';
+import genDiff from '../src/index.js';
 
 program
   .version('0.5.0')
@@ -13,7 +13,7 @@ program
   .addHelpText('before', '\n')
   .action((filepath1, filepath2) => {
     const options = program.opts();
-    const formattedDiff = gendiff(filepath1, filepath2, options.format);
+    const formattedDiff = genDiff(filepath1, filepath2, options.format);
     console.log(formattedDiff); // eslint-disable-line no-console
   });
 program.parse();
