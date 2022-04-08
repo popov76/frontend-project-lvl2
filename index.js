@@ -1,3 +1,3 @@
-import genDiff from './src/fileDataSets.js';
+import genDiff from './src/index.js';
 
 export default genDiff;
